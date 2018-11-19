@@ -1,4 +1,5 @@
 import {h, render, run} from '@composi/core'
+import { mergeObjects } from '@composi/merge-objects'
 import Navigation from './components/navigation'
 import Item from './components/item'
 
@@ -70,18 +71,20 @@ const program = {
   // 'reload' will reload data after sort.
   // 'reload will also cause lastUpdate to update.
   update(msg, state) {
+    // Make a copy of state, leaving it immutable:
+    let prevState = mergeObjects(state)
     switch(msg.type) {
       case 'load':
-        state.items = msg.data
-        return [state]
+        prevState.items = msg.data
+        return [prevState]
       case 'sort':
-        const sorted = sortByScore(state)
-        state.items = sorted
-        return [state]
+        const sorted = sortByScore(prevState)
+        prevState.items = sorted
+        return [prevState]
       case 'reload':
         loadItems()
-        state.lastUpdate = new Date()
-        return [state]
+        prevState.lastUpdate = new Date()
+        return [prevState]
     }
   }
 }

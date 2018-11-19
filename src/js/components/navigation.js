@@ -1,7 +1,5 @@
 import { h } from '@composi/core'
 import Title from './title'
-import SortButton from './sort-button'
-import ResetButton from './reset-button'
 import Button from './button'
 
 export default function Navigation({lastUpdate, send}) {
